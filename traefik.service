@@ -1,0 +1,30 @@
+[Unit]
+Description=traefik proxy
+Requires=podman.socket
+BindsTo=containers.target
+After=podman.socket
+Before=containers.target
+
+[Service]
+Type=notify
+NotifyAccess=all
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStart=/usr/bin/podman run \
+	--cgroups=no-conmon --sdnotify=conmon -d \
+	--replace --name %n \
+	-p 127.0.0.1:80:80 \
+	-p 127.0.0.1:443:443 \
+	-p 127.0.0.1:5432:5432 \
+	-p 127.0.0.1:9000:8080 \
+	-v /run/podman/podman.sock:/var/run/docker.sock \
+	docker.io/traefik:v2.8 \
+	--api.insecure=true \
+	--providers.docker \
+	--entrypoints.http.address=:80 \
+	--entrypoints.https.address=:443 \
+	--entrypoints.postgres.address=:5432
+ExecStop=/usr/bin/podman stop --ignore %n
+
+[Install]
+WantedBy=containers.target

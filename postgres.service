@@ -1,0 +1,27 @@
+[Unit]
+Description=postgres database
+Requires=podman.socket podman-network@postgres.service
+After=podman.socket podman-network@postgres.service
+BindsTo=containers.target
+Before=containers.target
+
+[Service]
+Type=notify
+NotifyAccess=all
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=/etc/local/postgres.env
+Restart=on-failure
+ExecStart=/usr/bin/podman run \
+	--cgroups=no-conmon --sdnotify=conmon -d \
+	--replace --name %n \
+	--network postgres \
+	-v postgres-data:/data \
+	-e POSTGRES_PASSWORD \
+	-l traefik.tcp.routers.postgres.entrypoints=postgres \
+	-l traefik.tcp.routers.postgres.rule=HostSNI(`*`) \
+	-l traefik.tcp.services.postgres.loadbalancer.server.port=5432 \
+	docker.io/postgres:14
+ExecStop=/usr/bin/podman stop --ignore %n
+
+[Install]
+WantedBy=containers.target

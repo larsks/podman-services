@@ -1,0 +1,7 @@
+[Unit]
+Description=Target for containerized services
+After=podman.socket
+Requires=podman.socket
+
+[Install]
+WantedBy=multi-user.target
