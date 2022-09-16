@@ -21,6 +21,7 @@ ExecStart=/usr/bin/podman run \
 	docker.io/traefik:v2.8 \
 	--api.insecure=true \
 	--providers.docker \
+	--providers.docker.exposedbydefault=false
 ExecStop=/usr/bin/podman stop --ignore %n
 
 [Install]
