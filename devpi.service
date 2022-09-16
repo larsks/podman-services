@@ -9,6 +9,8 @@ Before=containers.target
 Type=notify
 NotifyAccess=all
 Environment=PODMAN_SYSTEMD_UNIT=%n
+Environment=IMAGE_TAG=latest
+EnvironmentFile=-/etc/local/devpi.env
 Restart=on-failure
 ExecStart=/usr/bin/podman run \
 	--cgroups=no-conmon --sdnotify=conmon -d \
@@ -17,7 +19,7 @@ ExecStart=/usr/bin/podman run \
 	-v devpi-data:/data \
 	-l 'traefik.http.routers.devpi.rule=Host(`devpi.internal`)' \
 	-l 'traefik.http.services.devpi.loadbalancer.server.port=3141' \
-	ghcr.io/larsks/devpi:42843ba7
+	ghcr.io/larsks/devpi:${IMAGE_TAG}
 ExecStop=/usr/bin/podman stop --ignore %n
 
 [Install]
