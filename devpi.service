@@ -17,6 +17,7 @@ ExecStart=/usr/bin/podman run \
 	--replace --name %n \
 	--network services \
 	-v devpi-data:/data \
+	-l 'traefik.enable=true' \
 	-l 'traefik.http.routers.devpi.rule=Host(`devpi.internal`)' \
 	-l 'traefik.http.services.devpi.loadbalancer.server.port=3141' \
 	ghcr.io/larsks/devpi:${IMAGE_TAG}
