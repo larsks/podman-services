@@ -1,7 +1,7 @@
 [Unit]
 Description=postgres database
-Requires=podman.socket podman-network@postgres.service
-After=podman.socket podman-network@postgres.service
+Requires=podman.socket podman-network@services.service
+After=podman.socket podman-network@services.service
 BindsTo=containers.target
 Before=containers.target
 
@@ -14,7 +14,7 @@ Restart=on-failure
 ExecStart=/usr/bin/podman run \
 	--cgroups=no-conmon --sdnotify=conmon -d \
 	--replace --name %n \
-	--network postgres \
+	--network services \
 	-v postgres-data:/data \
 	-e POSTGRES_PASSWORD \
 	-l traefik.tcp.routers.postgres.entrypoints=postgres \

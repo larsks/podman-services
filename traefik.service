@@ -1,8 +1,8 @@
 [Unit]
 Description=traefik proxy
-Requires=podman.socket
+Requires=podman.socket podman-network@services.service
+After=podman.socket podman-network@services.service
 BindsTo=containers.target
-After=podman.socket
 Before=containers.target
 
 [Service]
@@ -13,6 +13,7 @@ Restart=on-failure
 ExecStart=/usr/bin/podman run \
 	--cgroups=no-conmon --sdnotify=conmon -d \
 	--replace --name %n \
+	--network services \
 	-p 127.0.0.1:80:80 \
 	-p 127.0.0.1:443:443 \
 	-p 127.0.0.1:5432:5432 \
