@@ -21,8 +21,6 @@ ExecStart=/usr/bin/podman run \
 	docker.io/traefik:v2.8 \
 	--api.insecure=true \
 	--providers.docker \
-	--entrypoints.http.address=:80 \
-	--entrypoints.https.address=:443 \
 ExecStop=/usr/bin/podman stop --ignore %n
 
 [Install]
