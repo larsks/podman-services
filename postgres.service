@@ -15,11 +15,9 @@ ExecStart=/usr/bin/podman run \
 	--cgroups=no-conmon --sdnotify=conmon -d \
 	--replace --name %n \
 	--network services \
+	-p 127.0.0.1:5432:5432 \
 	-v postgres-data:/data \
 	-e POSTGRES_PASSWORD \
-	-l traefik.tcp.routers.postgres.entrypoints=postgres \
-	-l traefik.tcp.routers.postgres.rule=HostSNI(`*`) \
-	-l traefik.tcp.services.postgres.loadbalancer.server.port=5432 \
 	docker.io/postgres:14
 ExecStop=/usr/bin/podman stop --ignore %n
 
