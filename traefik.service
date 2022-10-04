@@ -17,7 +17,7 @@ ExecStart=/usr/bin/podman run \
 	-p 127.0.0.1:80:80 \
 	-p 127.0.0.1:443:443 \
 	-p 127.0.0.1:9000:8080 \
-	-v /run/podman/podman.sock:/var/run/docker.sock \
+	-v /run/podman/podman.sock:/var/run/docker.sock:z \
 	docker.io/traefik:v2.8 \
 	--api.insecure=true \
 	--providers.docker \
