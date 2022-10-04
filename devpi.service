@@ -1,7 +1,7 @@
 [Unit]
 Description=devpi pypy proxy
-Requires=podman.socket podman-network@services.service
-After=podman.socket podman-network@services.service
+Requires=podman.socket podman-network@services.service traefik.service
+After=podman.socket podman-network@services.service traefik.service
 BindsTo=containers.target
 Before=containers.target
 
