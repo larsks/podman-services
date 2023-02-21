@@ -1,0 +1,9 @@
+[Unit]
+After=NetworkManager.service
+Requires=NetworkManager.service
+
+[Serivce]
+ExecStart=/usr/sbin/dnsmasq -i br-infra --bind-interfaces -k -C /dev/null
+
+[Install]
+WantedBy=multi-user.target
