@@ -2,7 +2,8 @@
 After=NetworkManager.service
 Requires=NetworkManager.service
 
-[Serivce]
+[Service]
+Type=exec
 ExecStart=/usr/sbin/dnsmasq -i br-infra --bind-interfaces -k -C /dev/null
 
 [Install]
